@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,55 +45,55 @@ public class teacher_sign_up_in extends AppCompatActivity {
         setContentView(R.layout.teacher_sign_up);
     }
 
-//    public void additemson_tcher_state_spinner() {
-//        sppiner_state_tchr = (Spinner) findViewById(R.id.spinner_tchr_state);
-//        sppiner_school_tchr = (Spinner) findViewById(R.id.spinner_tchr_school);
-//        final List<String> state_list_tchr = new ArrayList<>();
-//        final List<String> schoollist_tchr = new ArrayList<>();
-//        final DatabaseReference state = database_tchr.getReference("state");
-//
-//        state.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-//                    state_list_tchr.add(String.valueOf(dsp.getKey())); //add result into array list
-//                    Log.d("ayush", "onDataChange: " + dsp.getKey());
-//                }
-//                Log.d("sagar", "onDataChange: " + state_list_tchr);
-//                sppiner_state_tchr.setAdapter(new ArrayAdapter<String>(teacher_sign_up_in.this, R.layout.support_simple_spinner_dropdown_item, state_list_tchr));
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//        sppiner_state_tchr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                selected_state_tchr = adapterView.getSelectedItem().toString();
-//                state.child(selected_state_tchr).addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                            schoollist_tchr.add(snapshot.getKey());
-//                            Log.d("sagar dabas", "onDataChange: " + snapshot.getKey());
-//                        }
-//                        Log.d("sagar dabas", "onDataChange: school" + schoollist_tchr);
-//                        sppiner_school_tchr.setAdapter(new ArrayAdapter<>(teacher_sign_up_in.this, R.layout.support_simple_spinner_dropdown_item, schoollist_tchr));
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
+    public void additemson_tcher_state_spinner() {
+        sppiner_state_tchr = (Spinner) findViewById(R.id.spinner_tchr_state);
+        sppiner_school_tchr = (Spinner) findViewById(R.id.spinner_tchr_school);
+        final List<String> state_list_tchr = new ArrayList<>();
+        final List<String> schoollist_tchr = new ArrayList<>();
+        final DatabaseReference state = database_tchr.getReference("state");
+
+        state.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    state_list_tchr.add(String.valueOf(dsp.getKey())); //add result into array list
+                    Log.d("ayush", "onDataChange: " + dsp.getKey());
+                }
+                Log.d("sagar", "onDataChange: " + state_list_tchr);
+                sppiner_state_tchr.setAdapter(new ArrayAdapter<String>(teacher_sign_up_in.this, R.layout.support_simple_spinner_dropdown_item, state_list_tchr));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+        sppiner_state_tchr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selected_state_tchr = adapterView.getSelectedItem().toString();
+                state.child(selected_state_tchr).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            schoollist_tchr.add(snapshot.getKey());
+                            Log.d("sagar dabas", "onDataChange: " + snapshot.getKey());
+                        }
+                        Log.d("sagar dabas", "onDataChange: school" + schoollist_tchr);
+                        sppiner_school_tchr.setAdapter(new ArrayAdapter<>(teacher_sign_up_in.this, R.layout.support_simple_spinner_dropdown_item, schoollist_tchr));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 //        sppiner_school_tchr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -103,9 +104,9 @@ public class teacher_sign_up_in extends AppCompatActivity {
 //            public void onNothingSelected(AdapterView<?> adapterView) {
 //            }
 //        });
-//
-//
-//    }
+
+
+    }
 
 
     public void check_signup_detail(View view) {
@@ -115,6 +116,7 @@ public class teacher_sign_up_in extends AppCompatActivity {
         String str_userid = et_emailid.getText().toString();
         String str_newpswrd = et_newpswrd.getText().toString();
         String str_cnfrmpswrd = et_cnfrmpswrd.getText().toString();
+        String string=null;
 
         if (str_newpswrd.equals(str_cnfrmpswrd)) {
             //continue
@@ -122,12 +124,12 @@ public class teacher_sign_up_in extends AppCompatActivity {
                 et_emailid.setError("Enter the email id");
             } else {
 
-                if (selected_state_tchr.isEmpty()) {
-                    ((TextView) sppiner_state_tchr.getSelectedView()).setError("select the state");
+                if (selected_state_tchr==null) {
+                    Toast.makeText(this,"select a state",Toast.LENGTH_SHORT).show();
 
                 } else {
-                    if (selected_school_tchr.isEmpty()) {
-                        ((TextView) sppiner_school_tchr.getSelectedView()).setError("select the school");
+                    if (selected_school_tchr==null) {
+                        //((TextView) sppiner_school_tchr.getSelectedView()).setError("select the school");
                     } else {
                         // set contentview on next page.......
                     }
