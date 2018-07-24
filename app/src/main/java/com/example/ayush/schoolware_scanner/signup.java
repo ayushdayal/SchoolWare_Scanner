@@ -42,7 +42,7 @@ public class signup extends AppCompatActivity {
         setContentView(R.layout.signup);
         addItemsOnSpinner2();
         addListenerOnButton();
-        makeStructure();
+       // makeStructure();
     }
 
     public void addItemsOnSpinner2() {

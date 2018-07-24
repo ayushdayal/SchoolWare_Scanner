@@ -24,8 +24,8 @@ import java.util.List;
 
 public class teacher_sign_up_in extends AppCompatActivity {
     FirebaseDatabase database_tchr;
-    String selected_school_tchr;
-    String selected_state_tchr;
+    String selected_school_tchr="school1";
+    String selected_state_tchr="goa";
     private Spinner sppiner_state_tchr;
     private Spinner sppiner_school_tchr;
 
@@ -34,7 +34,6 @@ public class teacher_sign_up_in extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_sign_in);
         database_tchr = FirebaseDatabase.getInstance();
-        //additemson_tcher_state_spinner();
     }
 
     public void forgotpass(View view) {
@@ -43,6 +42,7 @@ public class teacher_sign_up_in extends AppCompatActivity {
 
     public void opensignup(View view) {
         setContentView(R.layout.teacher_sign_up);
+        additemson_tcher_state_spinner();
     }
 
     public void additemson_tcher_state_spinner() {
@@ -60,7 +60,7 @@ public class teacher_sign_up_in extends AppCompatActivity {
                     Log.d("ayush", "onDataChange: " + dsp.getKey());
                 }
                 Log.d("sagar", "onDataChange: " + state_list_tchr);
-                sppiner_state_tchr.setAdapter(new ArrayAdapter<String>(teacher_sign_up_in.this, R.layout.support_simple_spinner_dropdown_item, state_list_tchr));
+                sppiner_state_tchr.setAdapter(new ArrayAdapter<>(teacher_sign_up_in.this, R.layout.support_simple_spinner_dropdown_item, state_list_tchr));
             }
 
             @Override
@@ -94,16 +94,16 @@ public class teacher_sign_up_in extends AppCompatActivity {
 
             }
         });
-//        sppiner_school_tchr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                selected_school_tchr = adapterView.getSelectedItem().toString();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//            }
-//        });
+        sppiner_school_tchr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selected_school_tchr = adapterView.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
 
     }
@@ -129,7 +129,7 @@ public class teacher_sign_up_in extends AppCompatActivity {
 
                 } else {
                     if (selected_school_tchr==null) {
-                        //((TextView) sppiner_school_tchr.getSelectedView()).setError("select the school");
+
                     } else {
                         // set contentview on next page.......
                     }

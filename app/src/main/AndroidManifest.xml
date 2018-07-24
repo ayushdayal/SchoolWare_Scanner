@@ -15,14 +15,14 @@
         <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".signup" >
-
-        </activity>
-        <activity android:name=".teacher_sign_up_in" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".teacher_sign_up_in" >
 
         </activity>
         <activity android:name=".student_sign_in_up" >
