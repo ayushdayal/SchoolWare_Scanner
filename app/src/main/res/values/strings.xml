@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AndroidBLETutorial</string>
+    <string name="country_prompt">Choose a country</string>
+
+    <string-array name="country_arrays">
+        <item>Delhi</item>
+        <item>Haryana </item>
+        <item>Mumbai</item>
+        <item>Punjab</item>
+        <item>UP</item>
+        <item>Rajasthan</item>
+        <item>Tamil Nadu</item>
+        <item>Chennai</item>
+    </string-array>
+</resources>
