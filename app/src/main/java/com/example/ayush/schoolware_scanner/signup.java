@@ -1,7 +1,10 @@
 package com.example.ayush.schoolware_scanner;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +17,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,29 +36,55 @@ public class signup extends AppCompatActivity {
     private Spinner sppiner_school;
     private Spinner sppiner_class;
 
-    String selected_school="school1";
-    String selected_class="1a";
-    String selected_state="goa";
+    String selected_school = "school1";
+    String selected_class = "1a";
+    String selected_state = "goa";
 
     String TAG = "s";
     private Button btnSubmit;
     FirebaseDatabase database;
+    SharedPreferences mSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
         database = FirebaseDatabase.getInstance();
-
         addItemsOnSpinner();
-       // addListenerOnButton();
-      //   makeStructure();
+        // addListenerOnButton();
+        //   makeStructure();
+    }
+
+    private void savingData(SharedPreferences mSettings) {
+        SharedPreferences.Editor editor = mSettings.edit();
+
+        editor.putString("State_name", selected_state);
+        editor.putString("School_name", selected_school);
+        editor.putString("class_name", selected_class);
+        editor.apply();
+        Toast.makeText(this,"aapka kaam ho gya", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(this);
+        String stateName = mSettings.getString("State_name", "missing");
+        String schoolName = mSettings.getString("School_name", "missing");
+        String className = mSettings.getString("class_name", "missing");
+        if(stateName.equals("missing")||schoolName.equals("missing")||className.equals("missing")){
+
+        }else {
+            startActivity(new Intent(this,MainActivity.class));
+        }
+
     }
 
     public void addItemsOnSpinner() {
 
         sppiner_state = (Spinner) findViewById(R.id.spinner_state);
-        sppiner_school = (Spinner)findViewById(R.id.spinner_school);
+        sppiner_school = (Spinner) findViewById(R.id.spinner_school);
         sppiner_class = (Spinner) findViewById(R.id.spinner_class);
 
         final List<String> state_list = new ArrayList<>();
@@ -60,7 +94,7 @@ public class signup extends AppCompatActivity {
 
         state.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     state_list.add(String.valueOf(dsp.getKey())); //add result into array list
                     Log.d(TAG, "onDataChange: " + dsp.getKey());
@@ -109,23 +143,23 @@ public class signup extends AppCompatActivity {
                 Log.d(TAG, "onItemSelected: in sele sldf");
                 selected_school = adapterView.getSelectedItem().toString();
 
-                    state.child(selected_state).child(adapterView.getSelectedItem().toString()).child("classes")
+                state.child(selected_state).child(adapterView.getSelectedItem().toString()).child("classes")
 
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        classes_list.add(snapshot.getKey());
-                                        Log.d(TAG, "onDataChange: class" + snapshot.getKey());
-                                    }
-                                    sppiner_class.setAdapter(new ArrayAdapter<>(signup.this, R.layout.support_simple_spinner_dropdown_item, classes_list));
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    classes_list.add(snapshot.getKey());
+                                    Log.d(TAG, "onDataChange: class" + snapshot.getKey());
                                 }
+                                sppiner_class.setAdapter(new ArrayAdapter<>(signup.this, R.layout.support_simple_spinner_dropdown_item, classes_list));
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                }
-                            });
+                            }
+                        });
 
             }
 
@@ -247,20 +281,22 @@ public class signup extends AppCompatActivity {
 
     }
 
-    public void check_sign_up_details(View view) {
-        if(selected_state.isEmpty()){
-            ((TextView) sppiner_state.getSelectedView()).setError("select the state");
-        }
-        else{
-            if(selected_school.isEmpty()){
-                ((TextView) sppiner_school.getSelectedView()).setError("select the state");
-            }
-            else{
-                if(selected_class.isEmpty()){
-                    ((TextView) sppiner_class.getSelectedView()).setError("select the state");
-                }
-                else{
-                    //add deatails to firebase
+
+
+    public void check_sign_up_detail(View view) {
+        if (selected_state==null) {
+Toast.makeText(this,"select a state", Toast.LENGTH_LONG).show();
+        } else {
+            if (selected_school==null) {
+                Toast.makeText(this,"select a school", Toast.LENGTH_LONG).show();
+            } else {
+                if (selected_class==null) {
+                    Toast.makeText(this,"select a class", Toast.LENGTH_LONG).show();
+                } else {
+
+                    mSettings = PreferenceManager.getDefaultSharedPreferences(this);
+                    savingData(mSettings);
+
                 }
             }
         }
