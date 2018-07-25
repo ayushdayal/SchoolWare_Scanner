@@ -33,7 +33,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="State"
-        android:textSize="23dp" />
+        android:textStyle="bold"
+        android:textSize="20sp" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -58,7 +59,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="School"
-        android:textSize="23sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -82,7 +84,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="email id"
-        android:textSize="25sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -108,7 +111,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="Enter New Password"
-        android:textSize="23sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -133,7 +137,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="Confirm Password"
-        android:textSize="23sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -149,22 +154,21 @@
             />
     </android.support.v7.widget.CardView>
 
+<android.support.v7.widget.CardView
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <Button
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/button3"
+      android:textStyle="bold"
+      android:text="Let's Start"
+      android:textSize="35sp"/>
+</android.support.v7.widget.CardView>
 
-    <Button
-        android:onClick="check_signup_detail"
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="Lets Start"
-        android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
 
 
 </LinearLayout>

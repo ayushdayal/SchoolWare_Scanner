@@ -40,27 +40,27 @@ public class signup extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
-        addItemsOnSpinner2();
-        addListenerOnButton();
-       // makeStructure();
+        database = FirebaseDatabase.getInstance();
+
+        addItemsOnSpinner();
+       // addListenerOnButton();
+      //   makeStructure();
     }
 
-    public void addItemsOnSpinner2() {
+    public void addItemsOnSpinner() {
 
-        sppiner_state = (Spinner) findViewById(R.id.spinner);
-        sppiner_school = (Spinner) findViewById(R.id.spinner2);
-        sppiner_class = (Spinner) findViewById(R.id.spinner3);
+        sppiner_state = (Spinner) findViewById(R.id.spinner_state);
+        sppiner_school = (Spinner)findViewById(R.id.spinner_school);
+        sppiner_class = (Spinner) findViewById(R.id.spinner_class);
 
-        final List<String> state_list = new ArrayList<String>();
-        final List<String> schoollist = new ArrayList<String>();
-        final List<String> classes_list = new ArrayList<String>();
-
-        database = FirebaseDatabase.getInstance();
+        final List<String> state_list = new ArrayList<>();
+        final List<String> schoollist = new ArrayList<>();
+        final List<String> classes_list = new ArrayList<>();
         final DatabaseReference state = database.getReference("state");
 
         state.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     state_list.add(String.valueOf(dsp.getKey())); //add result into array list
                     Log.d(TAG, "onDataChange: " + dsp.getKey());
@@ -108,8 +108,9 @@ public class signup extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG, "onItemSelected: in sele sldf");
                 selected_school = adapterView.getSelectedItem().toString();
-                if (selected_school != null) {
-                    state.child(selected_state).child(adapterView.getSelectedItem().toString())
+
+                    state.child(selected_state).child(adapterView.getSelectedItem().toString()).child("classes")
+
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -125,7 +126,7 @@ public class signup extends AppCompatActivity {
 
                                 }
                             });
-                }
+
             }
 
             @Override
@@ -149,7 +150,7 @@ public class signup extends AppCompatActivity {
 
     public void addListenerOnButton() {
 
-        sppiner_state = (Spinner) findViewById(R.id.spinner2);
+        sppiner_state = (Spinner) findViewById(R.id.spinner_state);
         btnSubmit = (Button) findViewById(R.id.button2);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +25,8 @@ public class student_sign_in_up extends AppCompatActivity {
     FirebaseDatabase database_stndt;
     String selected_school_stndt;
     String selected_state_stndt;
+    private Spinner sppiner_state_stndnt;
+    private Spinner sppiner_school_stndnt;
 
 
     @Override
@@ -31,6 +34,7 @@ public class student_sign_in_up extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_sign_in);
         database_stndt = FirebaseDatabase.getInstance();
+
     }
 
     public void forgotpswrd_student(View view) {
@@ -39,6 +43,7 @@ public class student_sign_in_up extends AppCompatActivity {
 
     public void opensignup_stndt(View view) {
         setContentView(R.layout.student_sign_up);
+        additemson_stndt_state_spinner();
 
     }
 
@@ -51,30 +56,41 @@ public class student_sign_in_up extends AppCompatActivity {
         String str_cnfrmpswrd_stndnt = et_cnfrmpswrd.getText().toString();
 
         if (str_newpswrd_stndnt.equals(str_cnfrmpswrd_stndnt)) {
-            //continue
-            setContentView(R.layout.student_personal_details);
+            if (str_userid_stndnt.isEmpty()) {
+                et_userid.setError("enter your user id");
+            } else {
+                if (selected_state_stndt == null) {
+                    Toast.makeText(this, "select a state", Toast.LENGTH_LONG).show();
+                } else {
+                    if (selected_school_stndt == null) {
+                        Toast.makeText(this, "select a state", Toast.LENGTH_LONG).show();
+
+                    } else {
+
+                        setContentView(R.layout.student_personal_details);
+
+                    }
+                }
+            }
+
         } else {
             et_cnfrmpswrd.setError("password don't match");
 
         }
-        checking_userid_stndnt(str_userid_stndnt);
 
 
     }
 
-    public void checking_userid_stndnt(String str_userid_stndnt) {
-        //check user id hai ki nhi
-    }
 
     public void back_to_sign_in(View view) {
         setContentView(R.layout.student_sign_in);
     }
 
 
-    public void additemson_stndt_state_spinner(View view) {
+    public void additemson_stndt_state_spinner() {
 
-        final Spinner sppiner_state_stndnt = (Spinner) findViewById(R.id.spinner_stndt_state);
-        final Spinner sppiner_school_stndnt = (Spinner) findViewById(R.id.spinner_stndt_school);
+        sppiner_state_stndnt = (Spinner) findViewById(R.id.spinner_stndt_state);
+        sppiner_school_stndnt = (Spinner) findViewById(R.id.spinner_stndt_school);
         final List<String> state_list_stndnt = new ArrayList<String>();
         final List<String> schoollist_stndnt = new ArrayList<String>();
         final DatabaseReference state = database_stndt.getReference("state");
@@ -87,7 +103,7 @@ public class student_sign_in_up extends AppCompatActivity {
                     Log.d("ayush", "onDataChange: " + dsp.getKey());
                 }
                 Log.d("sagar", "onDataChange: " + state_list_stndnt);
-                sppiner_state_stndnt.setAdapter(new ArrayAdapter<String>(student_sign_in_up.this, R.layout.support_simple_spinner_dropdown_item, state_list_stndnt));
+                sppiner_state_stndnt.setAdapter(new ArrayAdapter<>(student_sign_in_up.this, R.layout.support_simple_spinner_dropdown_item, state_list_stndnt));
             }
 
             @Override
@@ -106,7 +122,7 @@ public class student_sign_in_up extends AppCompatActivity {
                             Log.d("sagar dabas", "onDataChange: " + snapshot.getKey());
                         }
                         Log.d("sagar dabas", "onDataChange: school" + schoollist_stndnt);
-                        sppiner_school_stndnt.setAdapter(new ArrayAdapter<String>(student_sign_in_up.this, R.layout.support_simple_spinner_dropdown_item, schoollist_stndnt));
+                        sppiner_school_stndnt.setAdapter(new ArrayAdapter<>(student_sign_in_up.this, R.layout.support_simple_spinner_dropdown_item, schoollist_stndnt));
                     }
 
                     @Override

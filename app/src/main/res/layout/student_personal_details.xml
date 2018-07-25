@@ -15,15 +15,15 @@
 
 
     <TextView
-        android:background="@color/white"
         android:layout_marginTop="15dp"
         android:id="@+id/textView6"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:paddingLeft="7dp"
-        android:textSize="25sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:text="Student Name" />
 
 
@@ -36,15 +36,16 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
     <TextView
-        android:background="@color/white"
+
         android:layout_marginTop="15dp"
         android:id="@+id/textView8"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:paddingLeft="7dp"
-        android:textSize="25sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:text="Date of Birth" />
 
 
@@ -58,15 +59,15 @@
         android:layout_marginRight="16dp" />
 
     <TextView
-        android:background="@color/white"
         android:layout_marginTop="15dp"
         android:id="@+id/textView10"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:paddingLeft="7dp"
-        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textSize="20sp"
         android:text="Parent Name" />
 
     <TextView
@@ -78,15 +79,15 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
     <TextView
-        android:background="@color/white"
         android:layout_marginTop="15dp"
         android:id="@+id/textView12"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:paddingLeft="7dp"
-        android:textSize="25sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:text="Parent Mobile no" />
 
     <TextView
