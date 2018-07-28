@@ -129,6 +129,14 @@
           }
         },
         {
+          "client_id": "450054499125-ft3uicugvaulffihg8j6khj1ijn9numo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ayush.schoolware_scanner",
+            "certificate_hash": "1035da154ed06c9819da1345569cea9655069f83"
+          }
+        },
+        {
           "client_id": "450054499125-878r2rgc021gt91us27sls0ekkdkq91d.apps.googleusercontent.com",
           "client_type": 3
         }

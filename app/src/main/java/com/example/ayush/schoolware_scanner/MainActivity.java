@@ -29,9 +29,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    final HashMap<String, String> student_list = new HashMap<>();
 
     BluetoothManager btManager;
     BluetoothAdapter btAdapter;
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     TextView peripheralTextView;
     private final static int REQUEST_ENABLE_BT = 1;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-    ArrayList<String> ArrLst=new ArrayList<>();
+    ArrayList<String> ArrLst = new ArrayList<>();
     FirebaseDatabase database;
 
     String state;
@@ -53,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       Bundle bundle=getIntent().getExtras();
-       if(bundle!=null) {
-           state = String.valueOf(bundle.getChar("state"));
-           Class = String.valueOf(bundle.getChar("class"));
-           school = String.valueOf(bundle.getChar("school"));
-       }
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            state = String.valueOf(bundle.getChar("state"));
+            Class = String.valueOf(bundle.getChar("class"));
+            school = String.valueOf(bundle.getChar("school"));
+        }
         peripheralTextView = (TextView) findViewById(R.id.PeripheralTextView);
         peripheralTextView.setMovementMethod(new ScrollingMovementMethod());
 
@@ -155,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         public void onScanResult(int callbackType, ScanResult result) {
             if (result.getDevice().getName() != null) {
 
-                database.getReference("schoid").child("uniqid").child("prmsid").child("id").setValue(-1*result.getRssi());
+                database.getReference("schoid").child("uniqid").child("prmsid").child("id").setValue(-1 * result.getRssi());
 
                 if (Check(result.getDevice().getAddress())) {
                     peripheralTextView.append("Device Name: " + result.getDevice().getName() + " rssi: " + result.getRssi() + "\n" + result.getDevice().getAddress());
@@ -172,16 +175,37 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean Check(String str) {
         if (ArrLst.contains(str)) {
-            Log.d("g", "Check: returnig false"+str);
+            Log.d("g", "Check: returnig false" + str);
             return false;
-        }
-        else {
+        } else {
             ArrLst.add(str);
             Log.d("j", "Check: returnig true");
 
             return true;
         }
 
+    }
+
+    public void Student_List() {
+
+        final DatabaseReference State = database.getReference("state");
+
+        State.child(state).child(school).child("classes").child(Class).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot student : dataSnapshot.getChildren()) {
+                    Log.d("bsagR", "onDataChange: "+student.getKey()+student.getValue());
+                    student_list.put(student.getValue().toString(), student.getKey());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        attendence();
     }
 
     @Override
@@ -214,12 +238,15 @@ public class MainActivity extends AppCompatActivity {
         peripheralTextView.setText("");
         startScanningButton.setVisibility(View.INVISIBLE);
         stopScanningButton.setVisibility(View.VISIBLE);
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                btScanner.startScan(leScanCallback);
-            }
-        });
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                btScanner.startScan(leScanCallback);
+//            }
+//        });
+        ArrLst.add("1235456");
+        ArrLst.add("student1");
+        ArrLst.add("35456");
         final Handler handler = new Handler();
 
         handler.postDelayed(new Runnable() {
@@ -229,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
                 stopScanning();
             }
         }, 5000);
+        Student_List();
     }
 
     public void stopScanning() {
@@ -236,12 +264,12 @@ public class MainActivity extends AppCompatActivity {
         peripheralTextView.append("Stopped Scanning");
         startScanningButton.setVisibility(View.VISIBLE);
         stopScanningButton.setVisibility(View.INVISIBLE);
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                btScanner.stopScan(leScanCallback);
-            }
-        });
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                btScanner.stopScan(leScanCallback);
+//            }
+//        });
         final Handler handler = new Handler();
 
         handler.postDelayed(new Runnable() {
@@ -252,34 +280,33 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 5000);
     }
-    public void takeattendance(){
 
-        final DatabaseReference schooldatas=database.getReference("schooldatas");
-        schooldatas.child(school).child("students").child(Class).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(final DataSnapshot students:dataSnapshot.getChildren()){
-                    schooldatas.child(school).child("students").child(Class).child(Objects.requireNonNull(students.getKey())).child("personaldetails").child("mac").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot macAddress) {
-                            if(ArrLst.contains(Objects.requireNonNull(   macAddress.getValue()).toString()   )){
-                                schooldatas.child(school).child("students").child(Class).child(Objects.requireNonNull(students.getKey())).child("attendance").child("today").setValue("present");
-                            }else
-                                schooldatas.child(school).child("students").child(Class).child(Objects.requireNonNull(students.getKey())).child("attendance").child("today").setValue("absent");
+    public void attendence() {
+        Log.d("sagar", "attendence: cd");
+        final DatabaseReference dataschool = database.getReference("schooldatas");
+        Log.d("sd", "attendence: "+ArrLst+student_list);
+        for (int i=0;i<student_list.size();i++)
 
-                        }
+        {                Log.d("sadgar", "attendence: lelio");
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+            String Student_name;
+            String key = null;
+            Student_name = student_list.get(key);
 
-                        }
-                    });
+            if (ArrLst.contains(key)) {
 
-                }
+                dataschool.child(school).child("students").child(Class).child(Student_name).child("attendance").child("today").setValue("pre");
+                Log.d("sadgar", "attendence: lelio");
+            }
+            else {
+                Log.d("sagar", "attendence: else ka");
+                dataschool.child(school).child("students").child(Class).child(Student_name).child("attendance").child("today").setValue("absent");
+
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
+
+        }
+
+
     }
 }

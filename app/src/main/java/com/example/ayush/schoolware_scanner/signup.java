@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class signup extends AppCompatActivity {
@@ -44,6 +45,7 @@ public class signup extends AppCompatActivity {
     private Button btnSubmit;
     FirebaseDatabase database;
     SharedPreferences mSettings;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,8 +78,17 @@ public class signup extends AppCompatActivity {
         if(stateName.equals("missing")||schoolName.equals("missing")||className.equals("missing")){
 
         }else {
-            startActivity(new Intent(this,MainActivity.class));
+            Intent intent=new Intent(this,MainActivity.class);
+            intent.putExtra("state",selected_state);
+            intent.putExtra("school",selected_school);
+            intent.putExtra("class",selected_class);
+
+            startActivity(intent);
         }
+
+    }
+    public void attendence(){
+
 
     }
 
@@ -91,6 +102,7 @@ public class signup extends AppCompatActivity {
         final List<String> schoollist = new ArrayList<>();
         final List<String> classes_list = new ArrayList<>();
         final DatabaseReference state = database.getReference("state");
+
 
         state.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
